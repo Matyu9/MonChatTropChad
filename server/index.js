@@ -70,8 +70,8 @@ socketServer.on('connection', (socket) => {
             }
             else {
                 logged = true;
-                users.push({username: userName, ip:socket.conn.remoteAddress});
-                break;
+                if (user.ip != socket.conn.remoteAddress) users.push({username: userName, ip:socket.conn.remoteAddress});
+                break;  
             }
         }
     })
