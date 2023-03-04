@@ -1,0 +1,17 @@
+body {
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.body-wrapper {
+  padding: 0 10%;
+  height: 100%;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  margin: 0;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tumo Chat - Mathieu</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+  </head>
+  <body background="https://thumbs.gfycat.com/HatefulSeveralIbis-max-1mb.gif">
+    <header>
+      <img src="images/logo_tumo.png" />
+      <h1>Tumo Chat - Mathieu</h1>
+      <img src="images/logo_campus.png" />
+    </header>
+    <div class="body-wrapper">
+      <div id="message-feed">
+      </div>
+      <form id="message-form" class="input-wrapper" autocomplete="off">
+        <div class="input-bar">
+          <input
+            id="message-input"
+            type="text"
+            placeholder="Write something..."
+            required
+          />
+          <button type="submit" class="input-button">
+            <img id="message-send" src="images/send_button.png" style="--primary-color: #444444; --secondary-color: #2e2b2b;" />
+          </button>
+        </div>
+      </form>
+    </div>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="scripts/index.js"></script>
+  </body>
+</html>

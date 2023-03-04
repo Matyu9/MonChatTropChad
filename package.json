@@ -1,0 +1,17 @@
+{
+  "name": "programming--socket-io-chat",
+  "version": "1.0.0",
+  "description": "A simple chat written in Socket.IO",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Caesarovich",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "supervisor": "^0.12.0"
+  }
+}
