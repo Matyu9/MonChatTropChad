@@ -34,12 +34,12 @@ messageForm.addEventListener('submit', (event) => {
         content: messageInput.value,
         author: userName
     }
-    if (msg != '') {
+    if (msg !== '') {
         socket.emit('message', msg);
         messageInput.value = '';
     }
 });
 
 socket.on('message-receive', (data) => {
-    addMessage(data.content, data.time + ' • ' + data.author , data.author == userName);
+    addMessage(data.content, data.time + ' • ' + data.author , data.author === userName);
 })

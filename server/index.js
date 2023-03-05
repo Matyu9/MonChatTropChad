@@ -17,7 +17,7 @@ function prettyTime() {
 
 // Constantes 
 const port = 3001;
-const address = networkInterfaces()['en1'][1].address;
+const address = networkInterfaces()['wlo1'][0].address;
 
 
 // Serveurs
@@ -25,9 +25,7 @@ const serverExpress = express();
 const httpServer = createServer(serverExpress);
 const socketServer = new SocketIOServer(httpServer);
 
-let isMine = false
-
-serverExpress.use(express.static('public'))
+serverExpress.use(express.static('../public/'))
 
 if (!existsSync('./messages.json')){
     writeFileSync('./messages.json', '[]');
@@ -45,14 +43,14 @@ function sendMessage(socket, message, time, author) {
         content: message,
         time: time,
         author: author,
-        isMine: author == socket.conn.remoteAddress
+        isMine: socket.conn.remoteAddress === author
     }
     socket.emit('message-receive', data);
 }
 
 async function broadcast(message, time, author) {
-    const sockets = await socketServer.fetchSockets();
-
+    const sockets = await socketServer.of('/').sockets;
+    console.log(sockets)
     for (let sock of sockets){
         sendMessage(sock, message, time, author);
     }
@@ -64,13 +62,13 @@ socketServer.on('connection', (socket) => {
     let logged = false;
     socket.on('userLog', (userName) => {
         for (let user of users){
-            if (user.ip != socket.conn.remoteAddress && user.username == userName){
+            if (user.ip !== socket.conn.remoteAddress && user.username === userName){
                 socket.emit('UserFoundButIt\'sNotYou', 'data');
                 socket.disconnect(true);
             }
             else {
                 logged = true;
-                if (user.ip != socket.conn.remoteAddress) users.push({username: userName, ip:socket.conn.remoteAddress});
+                if (user.ip !== socket.conn.remoteAddress) users.push({username: userName, ip:socket.conn.remoteAddress});
                 break;  
             }
         }
@@ -83,7 +81,7 @@ socketServer.on('connection', (socket) => {
 
     socket.on('message', (msg) => {
         if (!logged) socket.disconnect(true);
-        console.log(msg);
+        console.log(msg.content, prettyTime(), msg.author);
         broadcast(msg.content, prettyTime(), msg.author);
         messages.push({
             author: msg.author,
@@ -100,8 +98,6 @@ httpServer.listen(port, () => {
 
 
 process.on('SIGINT', () => {
-    socketServer.disconnectSockets();
-    socketServer.close();
     writeFileSync('./messages.json', JSON.stringify(messages));
     writeFileSync('./users.json', JSON.stringify(users));
     process.exit();
